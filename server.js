@@ -32,6 +32,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/reservas', require('./routes/reservas'))
+app.use('/api/search', require('./routes/search'))
 app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 
 app.listen(port, () => console.log(`Servidor corriendo en el puerto ${port}`))

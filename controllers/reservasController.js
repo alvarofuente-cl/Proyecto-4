@@ -1,7 +1,3 @@
-// const useCreteData = async (id) =>{
-//     const resp = await axios.get(`url/${id}`, data)
-// }
-
 let reserva = [
     {
         id: 1,
@@ -33,81 +29,87 @@ exports.create = async (req, res) => {
 // b. Obtener la lista de reservas
 exports.readAll = async (req, res) => {
     res.status(200).json({
-        msg: 'Reserva realizada con éxito.',
+        msg: 'Reservas obtenidas con éxito.',
         data: reserva,
     })
 }
 
-// c. Obtener información de un pedido específico
+// c. Obtener información de una reserva específica
 exports.readOne = async (req, res) => {
-    const orderId = parseInt(req.params.id)
-    const order = reserva.find((o) => o.id === orderId)
+    const reservaId = parseInt(req.params.id)
+    const reservaesp = reserva.find((o) => o.id === reservaId)
 
-    if (!order) {
-        return res.status(404).json({ msg: 'Pedido no encontrado.' })
+    if (!reservaesp) {
+        return res.status(404).json({ msg: 'Reserva no encontrada.' })
     }
 
-    res.json({
-        msg: 'Pedido obtenido con éxito.',
-        data: order,
+    res.status(200).json({
+        msg: 'Reserva obtenida con éxito.',
+        data: reservaesp,
     })
 }
 
-// d. Actualizar información de un pedido específico
+// d. Actualizar información de una reserva específica
 exports.update = async (req, res) => {
-    const orderId = parseInt(req.params.id)
-    const orderIndex = reserva.findIndex((o) => o.id === orderId)
+    const reservaId = parseInt(req.params.id)
+    const reservaIndex = reserva.findIndex((o) => o.id === reservaId)
 
-    if (orderIndex === -1) {
-        return res.status(404).json({ msg: 'Pedido no encontrado.' })
+    if (reservaIndex === -1) {
+        return res.status(404).json({ msg: 'Reserva no encontrada.' })
     }
 
-    reserva[orderIndex] = { ...reserva[orderIndex], ...req.body }
+    reserva[reservaIndex] = { ...reserva[reservaIndex], ...req.body }
     res.json({
-        msg: 'Pedido actualizado con éxito.',
-        data: reserva[orderIndex],
+        msg: 'Reserva actualizada con éxito.',
+        data: reserva[reservaIndex],
     })
 }
 
-// e. Eliminar un pedido específico
+// e. Eliminar una reserva específica
 exports.delete = async (req, res) => {
-    const orderId = parseInt(req.params.id)
-    const orderIndex = reserva.findIndex((o) => o.id === orderId)
+    const reservaId = parseInt(req.params.id)
+    const reservaIndex = reserva.findIndex((o) => o.id === reservaId)
 
-    if (orderIndex === -1) {
-        return res.status(404).json({ msg: 'Pedido no encontrado.' })
+    if (reservaIndex === -1) {
+        return res.status(404).json({ msg: 'Reserva no encontrada.' })
     }
 
-    reserva.splice(orderIndex, 1)
-    res.json({ msg: 'Pedido eliminado con éxito.' })
+    reserva.splice(reservaIndex, 1)
+    res.status(200).json({ msg: 'Reserva eliminada con éxito.' })
 }
 
 // f-j. F
 exports.filter = async (req, res) => {
-    const { name, restaurant, date, status } = req.query
+    const { hotel, fecha_inicio, fecha_fin, tipo_habitacion, estado, num_huespedes} = req.query
 
-    const filteredreserva = reserva.filter((order) => {
-        if (name && order.name !== name) {
+    const filteredreserva = reserva.filter((obj) => {
+        if (hotel && obj.hotel !== hotel) {
             return false
         }
-        if (restaurant && order.restaurant !== restaurant) {
+        if (fecha_inicio && obj.fecha_inicio !== fecha_inicio) {
             return false
         }
-        if (date && order.date !== date) {
+        if (fecha_fin && obj.fecha_fin !== fecha_fin) {
             return false
         }
-        if (status && order.status !== status) {
+        if (tipo_habitacion && obj.tipo_habitacion !== tipo_habitacion) {
+            return false
+        }
+        if (estado && obj.estado !== estado) {
+            return false
+        }
+        if (num_huespedes && obj.num_huespedes != num_huespedes) {
             return false
         }
         return true
     })
 
     if (filteredreserva.length === 0) {
-        return res.status(404).json({ msg: 'Pedido no encontrado.' })
+        return res.status(404).json({ msg: 'Filtro no encontrada.' })
     }
 
     res.json({
-        msg: 'Pedidos filtrados con éxito.',
+        msg: 'Filtro filtrada con éxito.',
         data: filteredreserva,
     })
 }

@@ -74,12 +74,12 @@ const reservasController = require('../controllers/reservasController')
  */
 router.post('/', reservasController.create)
 
-// b. Obtener la lista de reservas
+// b. Obtener lista de reservas
 /**
  * @swagger
  * /api/reservas:
  *  get:
- *    summary: Obtener la lista de reservas
+ *    summary: Obtener lista de reservas
  *    tags: [Reservas]
  *    responses:
  *      200:
@@ -93,125 +93,84 @@ router.post('/', reservasController.create)
  */
 router.get('/', reservasController.readAll)
 
-// d. Actualizar información de un pedido específico
+// c. Obtener información de una reserva específica
 /**
  * @swagger
  * /api/reservas/{id}:
- *  put:
- *    summary: Update information of a specific Resevas
- *    tags: [reservas]
+ *  get:
+ *    summary: Obtener información de una reserva específica
+ *    tags: [Reservas]
  *    parameters:
  *      - in: path
  *        name: id
  *        schema:
  *          type: integer
  *        required: true
- *        description: The Resevas's unique identifier
+ *        description: Obtener información de una reserva específica
+ *    responses:
+ *      200:
+ *        description: Reserva especifica
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              items:
+ *                $ref: '#/components/schemas/Reservas'
+ */
+router.get('/:id', reservasController.readOne)
+
+// d. Actualizar información de una reserva específica
+/**
+ * @swagger
+ * /api/reservas/{id}:
+ *  put:
+ *    summary: Actualizar información de una reserva específica
+ *    tags: [Reservas]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: integer
+ *        required: true
+ *        description: Actualizar información de una reserva específica
  *    requestBody:
  *      required: true
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/Resevas'
+ *            $ref: '#/components/schemas/Reservas'
  *    responses:
  *      200:
- *        description: Resevas updated successfully
+ *        description: Reservas updated successfully
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Resevas'
+ *              $ref: '#/components/schemas/Reservas'
  *      404:
- *        description: Resevas not found
+ *        description: Reservas not found
  */
 router.put('/:id', reservasController.update)
 
-// e. Eliminar un pedido específico
+// e. Eliminar una reserva específica
 /**
  * @swagger
  * /api/reservas/{id}:
  *  delete:
- *    summary: Delete a specific Resevas
- *    tags: [reservas]
+ *    summary: Eliminar una reserva específica
+ *    tags: [Reservas]
  *    parameters:
  *      - in: path
  *        name: id
  *        schema:
  *          type: integer
  *        required: true
- *        description: The Resevas's unique identifier
+ *        description: Eliminar una reserva específica
  *    responses:
  *      200:
- *        description: Resevas deleted successfully
+ *        description: Reserva eliminada con exito
  *      404:
- *        description: Resevas not found
+ *        description: Reserva no encontrada
  */
 router.delete('/:id', reservasController.delete)
-
-// f-j. Filtros
-/**
- * @swagger
- * /api/reservas/search:
- *  get:
- *    summary: Search reservas with filters
- *    tags: [reservas]
- *    parameters:
- *      - in: query
- *        name: name
- *        schema:
- *          type: string
- *        description: The name of the Resevased item
- *      - in: query
- *        name: restaurant
- *        schema:
- *          type: string
- *        description: The restaurant's name
- *      - in: query
- *        name: date
- *        schema:
- *          type: string
- *          format: date
- *        description: The date of the Resevas
- *      - in: query
- *        name: status
- *        schema:
- *          type: string
- *        description: The Resevas's status
- *    responses:
- *      200:
- *        description: A list of reservas that match the filters
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Resevas'
- */
-router.get('/search', reservasController.filter)
-
-// c. Obtener información de un pedido específico
-/**
- * @swagger
- * /api/reservas/{id}:
- *  get:
- *    summary: Get information of a specific Resevas
- *    tags: [reservas]
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: integer
- *        required: true
- *        description: The Resevas's unique identifier
- *    responses:
- *      200:
- *        description: Information of the specific Resevas
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/Resevas'
- *      404:
- *        description: Resevas not found
- */
-router.get('/:id', reservasController.readOne)
 
 module.exports = router
